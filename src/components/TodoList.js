@@ -1,6 +1,8 @@
 import React from 'react';
 import styled from 'styled-components';
 import TodoItem from '../TodoItem';
+import { useSelector, useDispatch } from 'react-redux';
+import { removeTodo, toggleTodo } from '../actions/';
 
 const TodoListBlock = styled.div`
   flex: 1;
@@ -8,13 +10,30 @@ const TodoListBlock = styled.div`
   overflow-y: auto;
 `;
 const TodoList = () => {
+  const todos = useSelector((state) => state.todolist.todos);
+  const dispatch = useDispatch();
+  const onRemoveTodo = (id) => {
+    dispatch(removeTodo(id));
+  };
+  const onToggleTodo = (id) => {
+    dispatch(toggleTodo(id));
+  };
   return (
     <>
       <TodoListBlock>
-        <TodoItem text={'프로젝트 생성하기'} done={true} />
-        <TodoItem text={'컴포넌트 스타일링 하기'} done={true} />
-        <TodoItem text={'리덕스 적용하기'} done={false} />
-        <TodoItem text={'기능구현하기'} done={false} />
+        {todos.length > 0 &&
+          todos.map((todo) => {
+            return (
+              <TodoItem
+                text={todo.todoText}
+                key={todo.id}
+                id={todo.id}
+                done={todo.done}
+                onRemove={onRemoveTodo}
+                ontoggle={onToggleTodo}
+              />
+            );
+          })}
       </TodoListBlock>
     </>
   );

@@ -58,13 +58,15 @@ const TodoItemBlock = styled.div`
   }
 `;
 
-const TodoItem = ({ id, done, text }) => {
+const TodoItem = ({ id, done, text, onRemove, ontoggle }) => {
   return (
     <>
       <TodoItemBlock>
-        <CheckIcon done={done}>{done && <MdDone />}</CheckIcon>
+        <CheckIcon onClick={() => ontoggle(id)} done={done}>
+          {done && <MdDone />}
+        </CheckIcon>
         <Text done={done}>{text}</Text>
-        <RemoveButton>
+        <RemoveButton onClick={() => onRemove(id)}>
           <MdDelete />
         </RemoveButton>
       </TodoItemBlock>
